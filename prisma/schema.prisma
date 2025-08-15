@@ -51,8 +51,11 @@ model Member {
   attendance       Attendance[]
   Timeline         Timeline[]
 
+  deviceUserId     String?        @unique // NEW FIELD for MB460 sync
+
   @@unique([cardNo, zoneId])
 }
+
 
 model Zone {
   id      String   @id @default(auto()) @map("_id") @db.ObjectId

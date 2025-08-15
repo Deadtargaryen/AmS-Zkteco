@@ -2,7 +2,6 @@ import type { NextApiResponse, NextApiRequest } from 'next'
 import { validateRoute } from '../../../../lib/auth'
 import { client } from '../../../../lib/prisma'
 
-
 export default validateRoute(async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
     const attendance = await client.attendance.findMany({
@@ -18,9 +17,6 @@ export default validateRoute(async (req: NextApiRequest, res: NextApiResponse) =
       },
     })
 
-    
-
-    // Get attendance statistics for year
     const attendanceStat = await client.attendance.groupBy({
       by: ['memberId'],
       where: {
@@ -43,37 +39,18 @@ export default validateRoute(async (req: NextApiRequest, res: NextApiResponse) =
       })
       return `${member.firstname} ${member.lastname}`
     }
+
     const stats = await Promise.all(
       attendanceStat.map(async item => {
         return { count: item._count.memberId, name: await getMember(item.memberId) }
       })
     )
 
-    //GET TOTAL MEMBERS
     const totalMembers = await client.member.count()
+    const maleMembers = await client.member.count({ where: { gender: 'MALE' } })
+    const femaleMembers = await client.member.count({ where: { gender: 'FEMALE' } })
+    const activeMembers = await client.member.count({ where: { status: 'ACTIVE' } })
 
-    //GET TOTAL MALE MEMBERS
-    const maleMembers = await client.member.count({
-      where: {
-        gender: 'MALE',
-      },
-    })
-
-    //GET TOTAL FEMALE MEMBERS
-    const femaleMembers = await client.member.count({
-      where: {
-        gender: 'FEMALE',
-      },
-    })
-
-    //GET ACTIVE MEMBERS
-    const activeMembers = await client.member.count({
-      where: {
-        status: 'ACTIVE',
-      },
-    })
-
-    // GET TOTAL NUMBER OF DAYS ATTENDANCE TAKE IN MONTH
     const attendanceDatesInMonth = async month => {
       const result = await client.attendance.groupBy({
         by: ['date'],
@@ -86,7 +63,6 @@ export default validateRoute(async (req: NextApiRequest, res: NextApiResponse) =
       return result.length
     }
 
-    //GET ATTENDANCE PERCENTAGE DATA FOR MONTHS OF THE YEAR IN FEMALE CATEGORY
     const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     const perMonthAttendanceTotalFemale = await Promise.all(
       months.map(async month => {
@@ -94,42 +70,55 @@ export default validateRoute(async (req: NextApiRequest, res: NextApiResponse) =
           where: {
             year: new Date().getFullYear(),
             month,
-            member: {
-              gender: 'FEMALE',
-            },
+            member: { gender: 'FEMALE' },
           },
         })
-        const percentMonthAttendanceFemale = Math.floor((result / ((await attendanceDatesInMonth(month)) * femaleMembers)) * 100)
-        return percentMonthAttendanceFemale
+        return Math.floor((result / ((await attendanceDatesInMonth(month)) * femaleMembers)) * 100)
       })
     )
 
-    //GET ATTENDANCE PERCENTAGE DATA FOR MONTHS OF THE YEAR IN MALE CATEGORY
     const perMonthAttendanceTotalMale = await Promise.all(
       months.map(async month => {
         const result = await client.attendance.count({
           where: {
             year: new Date().getFullYear(),
             month,
-            member: {
-              gender: 'MALE',
-            },
+            member: { gender: 'MALE' },
           },
         })
-        const percentMonthAttendanceMale = Math.floor((result / ((await attendanceDatesInMonth(month)) * maleMembers)) * 100)
-        return percentMonthAttendanceMale
+        return Math.floor((result / ((await attendanceDatesInMonth(month)) * maleMembers)) * 100)
       })
     )
 
     res.status(200).json({ attendance, stats: { perMonthAttendanceTotalFemale, perMonthAttendanceTotalMale } })
-  } else if (req.method === 'POST') {
-    const { id, date } = req.body
+  } 
+  else if (req.method === 'POST') {
     try {
-      // CHECK IF ID AND DATE EXISTS
-      if (!id || !date) {
-        return res.status(400).json({ message: 'Invalid Member. Please Select a Member.' })
+      let { id, user_id, date, timestamp } = req.body
+
+      // If coming from MB460 polling script, user_id will be present
+      if (user_id && !id) {
+        const member = await client.member.findFirst({
+          where: { cardNo: parseInt(user_id) }, // Using cardNo to match MB460 user ID
+        })
+
+        if (!member) {
+          return res.status(404).json({ message: `No member found for device user_id ${user_id}` })
+        }
+
+        id = member.id
       }
-      // CHECK IF ATTENDANCE ALREADY EXIST
+
+      if (!date && timestamp) {
+        date = new Date(timestamp).toISOString()
+      } else if (!date) {
+        date = new Date().toISOString()
+      }
+
+      if (!id || !date) {
+        return res.status(400).json({ message: 'Invalid Member or date' })
+      }
+
       const check = await client.attendance.findFirst({
         where: {
           memberId: id,
@@ -141,32 +130,27 @@ export default validateRoute(async (req: NextApiRequest, res: NextApiResponse) =
           },
         },
       })
+
       if (check) {
         return res.status(400).json({
-          message: `Duplicate! ${check.member.firstname} ${check.member.lastname}'s Attendance Already Marked For ${new Date(
-            check.date
-          ).toLocaleDateString()}`,
+          message: `Duplicate! ${check.member.firstname} ${check.member.lastname}'s Attendance Already Marked For ${new Date(check.date).toLocaleDateString()}`,
         })
       }
+
       const attendance = await client.attendance.create({
         data: {
           date,
-          member: {
-            connect: {
-              id,
-            },
-          },
+          member: { connect: { id } },
           year: new Date(date).getFullYear(),
           month: new Date(date).getMonth() + 1,
           day: new Date(date).getDate(),
         },
       })
-      if (attendance) {
-        return res.status(200).json({ message: `New Attendance Added.` })
-      }
+
+      return res.status(200).json({ message: `New Attendance Added.`, attendance })
     } catch (error) {
       console.log(error)
-      return res.status(401).json({ message: 'An error occured' })
+      return res.status(500).json({ message: 'An error occurred', error })
     }
   }
 })
