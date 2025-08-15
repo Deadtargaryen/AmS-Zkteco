@@ -1,0 +1,134 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  name         String    @unique
+  password     String
+  avatarUrl    String?
+  role         Role      @default(USER)
+  createdAt    DateTime? @default(now())
+  updatedAt    DateTime? @updatedAt
+  lastActiveAt DateTime?
+}
+
+model Member {
+  id               String         @id @default(auto()) @map("_id") @db.ObjectId
+  firstname        String
+  middlename       String
+  lastname         String
+  cardNo           Int
+  address          String
+  contactNo        String
+  alternateContact String?
+  email            String?
+  avatarUrl        String?
+  dateOfBirth      DateTime?
+  dateOfMembership DateTime?
+  dateOfBaptism    DateTime?      @db.Date
+  zone             Zone           @relation(fields: [zoneId], references: [id])
+  status           Status         @default(ACTIVE)
+  gender           Gender
+  placeOfBirth     String
+  occupation       String
+  maritalStatus    MarritalStatus
+  spouse           String?
+  zoneId           String         @db.ObjectId
+  nextOfKin        String?
+  kinContact       String?
+  businessAddress  String?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  attendance       Attendance[]
+  Timeline         Timeline[]
+
+  @@unique([cardNo, zoneId])
+}
+
+model Zone {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  name    String   @unique
+  members Member[]
+}
+
+model Attendance {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  member    Member    @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  date      DateTime? @default(now()) @db.Date
+  createdAt DateTime  @default(now())
+  memberId  String    @db.ObjectId
+  year      Int
+  month     Int
+  day       Int
+
+  @@unique([memberId, day, year, month])
+}
+
+model Timeline {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  date        String
+  createdAt   DateTime @default(now())
+  memberId    String   @db.ObjectId
+  member      Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
+}
+
+model Disfellowship {
+  id                String         @id @default(auto()) @map("_id") @db.ObjectId
+  disfellowshipDate DateTime
+  membershipId      String         @unique
+  reason            String
+  firstname         String
+  middlename        String
+  lastname          String
+  address           String
+  gender            Gender
+  contactNo         String
+  alternateContact  String?
+  avatarUrl         String?
+  maritalStatus     MarritalStatus
+  spouse            String?
+  dateOfBaptism     DateTime?      @db.Date
+  dateOfBirth       DateTime?
+  dateOfMembership  DateTime?
+  placeOfBirth      String
+  occupation        String
+  zone              String        
+  createdAt         DateTime       @default(now())
+}
+
+enum Role {
+  USER
+  ADMIN
+  DIRECTOR
+}
+
+enum Status {
+  ACTIVE
+  DISFELLOWSHIPPED
+  AWAY
+  DECEASED
+  SICK
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum MarritalStatus {
+  MARRIED
+  SINGLE
+  WIDOW
+  WIDOWER
+}
