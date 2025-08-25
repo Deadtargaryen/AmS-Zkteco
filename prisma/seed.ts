@@ -22,7 +22,7 @@ async function main() {
   // Create a Zone
   const zone = await prisma.zone.create({
     data: {
-      name: 'Zone A'
+      name: 'A'
     }
   })
   console.log('Zone:', zone)
