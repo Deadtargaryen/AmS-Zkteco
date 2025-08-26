@@ -52,7 +52,7 @@ type EditorProps = {
   businessAddress: string
 }
 
-type zone = 'A' | 'B' | 'C' | 'D' | 'E' | 'F'
+type zone = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I'
 type toaststatus = 'info' | 'warning' | 'success' | 'error'
 
 const Editor = (props: EditorProps) => {
@@ -482,8 +482,8 @@ const Editor = (props: EditorProps) => {
                 <option value="G">Zone G</option>
                 <option value="H">Zone H</option>
                 <option value="I">Zone I</option>
-                <option value="J">Zone J</option>
-                <option value="K">Zone K</option>
+                {/* <option value="J">Zone J</option> */}
+                {/* <option value="K">Zone K</option> */}
               </Select>
               {isError && <FormErrorMessage>Field is required.</FormErrorMessage>}
             </FormControl>

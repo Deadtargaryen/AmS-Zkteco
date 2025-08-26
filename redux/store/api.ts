@@ -21,7 +21,7 @@ export type member = {
   dateOfBirth?: Date
   dateOfMembership?: Date
   dateOfBaptism?: Date
-  zone: { name: 'A' | 'B' | 'C' | 'D' | 'E' | 'F' }
+  zone: { name: 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' }
   status: 'ACTIVE' | 'DISFELLOWSHIPPED' | 'AWAY'
   gender: 'MALE' | 'FEMALE'
   placeOfBirth: String

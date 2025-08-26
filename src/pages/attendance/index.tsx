@@ -528,6 +528,9 @@ const Attendance = () => {
                     <option value="D">Zone D</option>
                     <option value="E">Zone E</option>
                     <option value="F">Zone F</option>
+                    <option value="F">Zone G</option>
+                    <option value="F">Zone H</option>
+                    <option value="F">Zone I</option>
                   </Select>
                 </FormControl>
                 <FormControl>

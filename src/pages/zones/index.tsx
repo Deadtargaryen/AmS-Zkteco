@@ -139,8 +139,8 @@ const Zones = () => {
           <option value="G">Zone G</option>
           <option value="H">Zone H</option>
           <option value="I">Zone I</option>
-          <option value="J">Zone J</option>
-          <option value="K">Zone K</option>
+          {/* <option value="J">Zone J</option> */}
+          {/* <option value="K">Zone K</option> */}
         </Select>
       </Box>
       <Box mt="1rem">
