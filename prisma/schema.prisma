@@ -51,7 +51,6 @@ model Member {
   attendance       Attendance[]
   Timeline         Timeline[]
 
-  deviceUserId     String?        @unique // NEW FIELD for MB460 sync
 
   @@unique([cardNo, zoneId])
 }
@@ -60,6 +59,7 @@ model Member {
 model Zone {
   id      String   @id @default(auto()) @map("_id") @db.ObjectId
   name    String   @unique
+  rankNo  Int?     // New field to store computed rank number
   members Member[]
 }
 

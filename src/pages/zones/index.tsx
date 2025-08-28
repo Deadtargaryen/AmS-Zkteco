@@ -10,6 +10,7 @@ import StatCard from '../../../components/StatCard'
 import { badgeColor } from '../../../lib/badgeColor'
 import { useAppSelector } from '../../../redux/store/hooks'
 import { useGetMembersQuery } from '../../../redux/store/api'
+import TopActiveZonesWidget from '../../../components/widgets/TopActiveZonesWidget'
 
 const links = [
   {
@@ -196,6 +197,9 @@ const Zones = () => {
           </Box>
         </Flex>
       </Box>
+      <Box mt="1rem">
+  <TopActiveZonesWidget stats={currentZoneMembers} isLoading={isLoading} />
+</Box>
       <Box shadow="md" rounded="sm" p="1rem" bg="white">
         <Flex justifyContent="space-between" mb="1.5rem" alignItems="center">
           <Text fontWeight="semibold">Members List</Text>
