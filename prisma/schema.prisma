@@ -51,16 +51,24 @@ model Member {
   attendance       Attendance[]
   Timeline         Timeline[]
 
-
   @@unique([cardNo, zoneId])
 }
 
-
 model Zone {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  name    String   @unique
-  rankNo  Int?     // New field to store computed rank number
-  members Member[]
+  id       String               @id @default(auto()) @map("_id") @db.ObjectId
+  name     String               @unique
+  rankNo   Int? // New field to store computed rank number
+  members  Member[]
+  rankings ZoneRankingHistory[]
+}
+
+model ZoneRankingHistory {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  zone      Zone     @relation(fields: [zoneId], references: [id])
+  zoneId    String   @db.ObjectId
+  rankNo    Int
+  year      Int
+  createdAt DateTime @default(now())
 }
 
 model Attendance {
@@ -106,7 +114,7 @@ model Disfellowship {
   dateOfMembership  DateTime?
   placeOfBirth      String
   occupation        String
-  zone              String        
+  zone              String
   createdAt         DateTime       @default(now())
 }
 

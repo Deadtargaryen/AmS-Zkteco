@@ -10,6 +10,7 @@ import StatCard from '../../../components/StatCard'
 import { badgeColor } from '../../../lib/badgeColor'
 import { useAppSelector } from '../../../redux/store/hooks'
 import { useGetMembersQuery } from '../../../redux/store/api'
+import { rankMembers } from './utils/rankMembers'
 import TopActiveZonesWidget from '../../../components/widgets/TopActiveZonesWidget'
 
 const links = [
@@ -40,6 +41,12 @@ const Zones = () => {
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false)
 
   const columns = [
+    {
+    name: 'Rank',
+    selector: row => row.rankNo,
+    sortable: true,
+    width: '80px',
+  },
     {
       name: 'Name',
       selector: row => `${row.firstname} ${row.middlename} ${row.lastname}`,
@@ -86,10 +93,12 @@ const Zones = () => {
     },
   ]
 
-  const filteredItems = currentZoneMembers?.filter(item => {
-    let fullname = `${item.firstname} ${item.middlename} ${item.lastname}`
-    return fullname.toLowerCase().includes(filterText.toLowerCase())
-  })
+  const rankedZoneMembers = rankMembers(currentZoneMembers || [])
+
+  const filteredItems = rankedZoneMembers?.filter(item => {
+  const fullname = `${item.firstname} ${item.middlename} ${item.lastname}`
+  return fullname.toLowerCase().includes(filterText.toLowerCase())
+})
 
   useEffect(() => {
     const getMemebers = () => {
@@ -197,9 +206,9 @@ const Zones = () => {
           </Box>
         </Flex>
       </Box>
-      <Box mt="1rem">
+      {/* <Box mt="1rem">
   <TopActiveZonesWidget stats={currentZoneMembers} isLoading={isLoading} />
-</Box>
+</Box> */}
       <Box shadow="md" rounded="sm" p="1rem" bg="white">
         <Flex justifyContent="space-between" mb="1.5rem" alignItems="center">
           <Text fontWeight="semibold">Members List</Text>
