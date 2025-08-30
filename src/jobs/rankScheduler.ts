@@ -1,6 +1,6 @@
 // src/jobs/rankScheduler.ts
 import cron from 'node-cron'
-import { rankMembers } from '../pages/zones/utils/rankMembers'
+import { rankMembers } from '../utils/rankMembers'
 import { client as prisma } from '../../lib/prisma'
 
 const scheduleAnnualRanking = () => {

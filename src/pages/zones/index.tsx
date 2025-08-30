@@ -10,8 +10,8 @@ import StatCard from '../../../components/StatCard'
 import { badgeColor } from '../../../lib/badgeColor'
 import { useAppSelector } from '../../../redux/store/hooks'
 import { useGetMembersQuery } from '../../../redux/store/api'
-import { rankMembers } from './utils/rankMembers'
-import TopActiveZonesWidget from '../../../components/widgets/TopActiveZonesWidget'
+import { rankMembers } from '../../utils/rankMembers'
+// import TopActiveZonesWidget from '../../../components/widgets/TopActiveZonesWidget'
 
 const links = [
   {
