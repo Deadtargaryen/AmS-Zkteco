@@ -257,19 +257,23 @@ const Attendance = () => {
           handleTagClose('Month')
           handleTagClose('Year')
           setDay(getLastSunday())
-        } else if (quickFilter === 'Last Monday') {
-          handleTagClose('Month')
-          handleTagClose('Year')
-          setDay(getLastMonday())
-        } else if (quickFilter === 'Last Wednesday') {
+        } 
+        // else if (quickFilter === 'Last Monday') {
+        //   handleTagClose('Month')
+        //   handleTagClose('Year')
+        //   setDay(getLastMonday())
+        // } 
+        else if (quickFilter === 'Last Wednesday') {
           handleTagClose('Month')
           handleTagClose('Year')
           setDay(getLastWednesday())
-        } else if (quickFilter === 'Last Friday') {
-          handleTagClose('Month')
-          handleTagClose('Year')
-          setDay(getLastFriday())
-        } else if (quickFilter === 'This Month') {
+        } 
+        // else if (quickFilter === 'Last Friday') {
+        //   handleTagClose('Month')
+        //   handleTagClose('Year')
+        //   setDay(getLastFriday())
+        // } 
+        else if (quickFilter === 'This Month') {
           handleTagClose('Year')
           handleTagClose('Day')
           setMonth((new Date().getMonth() + 1).toString())
@@ -297,15 +301,15 @@ const Attendance = () => {
   const getLastSunday = () => {
     return moment().day(0).format('D')
   }
-  const getLastMonday = () => {
-    return moment().day(1).format('D')
-  }
+  // const getLastMonday = () => {
+  //   return moment().day(1).format('D')
+  // }
   const getLastWednesday = () => {
     return moment().day(3).format('D')
   }
-  const getLastFriday = () => {
-    return moment().day(5).format('D')
-  }
+  // const getLastFriday = () => {
+  //   return moment().day(5).format('D')
+  // }
 
   useEffect(() => {
     setActiveFilters(prev => {
@@ -548,9 +552,9 @@ const Attendance = () => {
                     <option value="Today">Today</option>
                     <option value="This Month">This Month</option>
                     <option value="Last Sunday">Last Sunday</option>
-                    <option value="Last Monday">Last Monday</option>
+                    {/* <option value="Last Monday">Last Monday</option> */}
                     <option value="Last Wednesday">Last Wednesday</option>
-                    <option value="Last Friday">Last Friday</option>
+                    {/* <option value="Last Friday">Last Friday</option> */}
                     <option value="Last Month">Last Month</option>
                   </Select>
                 </FormControl>

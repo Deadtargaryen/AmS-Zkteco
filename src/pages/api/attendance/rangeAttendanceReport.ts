@@ -80,27 +80,28 @@ export default validateRoute(async (req: NextApiRequest, res: NextApiResponse) =
         return new Date(record.date).getDay() === 0
       }).length
 
-      const totalMondayAttendance = member.attendance.filter(record => {
-        return new Date(record.date).getDay() === 1
-      }).length
+      // const totalMondayAttendance = member.attendance.filter(record => {
+      //   return new Date(record.date).getDay() === 1
+      // }).length
 
       const totalWednesdayAttendance = member.attendance.filter(record => {
         return new Date(record.date).getDay() === 3
       }).length
 
-      const totalFridayAttendance = member.attendance.filter(record => {
-        return new Date(record.date).getDay() === 5
-      }).length
+      // const totalFridayAttendance = member.attendance.filter(record => {
+      //   return new Date(record.date).getDay() === 5
+      // }).length
 
-      const totalAttendance = totalSundayAttendance + totalMondayAttendance + totalWednesdayAttendance + totalFridayAttendance
+      // const totalAttendance = totalSundayAttendance + totalMondayAttendance + totalWednesdayAttendance + totalFridayAttendance
+      const totalAttendance = totalSundayAttendance + totalWednesdayAttendance
 
       return {
         name: `${member.firstname} ${member.middlename} ${member.lastname}`,
         cardNo: member.cardNo,
         totalSundayAttendance,
-        totalMondayAttendance,
+        // totalMondayAttendance,
         totalWednesdayAttendance,
-        totalFridayAttendance,
+        // totalFridayAttendance,
         totalAttendance,
       }
     })

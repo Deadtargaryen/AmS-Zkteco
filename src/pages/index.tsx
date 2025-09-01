@@ -32,9 +32,9 @@ const Home = ({
   activeMembers,
   totalMembers,
   lastSundayAttendance,
-  lastMondayAttendance,
+  // lastMondayAttendance,
   lastWednesdayAttendance,
-  lastFridayAttendance,
+  // lastFridayAttendance,
   stats,
   isError,
 }) => {
@@ -138,7 +138,7 @@ const Home = ({
                       {lastSundayAttendance}
                     </Text>
                   </VStack>
-                  <VStack spacing="2">
+                  {/* <VStack spacing="2">
                     <Avatar size="sm" name="M O N" />
                     <Text as="h4" fontSize="sm" fontWeight="semibold">
                       Monday
@@ -146,7 +146,7 @@ const Home = ({
                     <Text fontSize="xs" fontWeight="bold" color="gray.600">
                       {lastMondayAttendance}
                     </Text>
-                  </VStack>
+                  </VStack> */}
                   <VStack spacing="2">
                     <Avatar size="sm" name="W E" />
                     <Text as="h4" fontSize="sm" fontWeight="semibold">
@@ -156,7 +156,7 @@ const Home = ({
                       {lastWednesdayAttendance}
                     </Text>
                   </VStack>
-                  <VStack spacing="2">
+                  {/* <VStack spacing="2">
                     <Avatar size="sm" name="F R" />
                     <Text as="h4" fontSize="sm" fontWeight="semibold">
                       Friday
@@ -164,7 +164,7 @@ const Home = ({
                     <Text fontSize="xs" fontWeight="bold" color="gray.600">
                       {lastFridayAttendance}
                     </Text>
-                  </VStack>
+                  </VStack> */}
                 </Flex>
               </Box>
             </Flex>
@@ -205,25 +205,25 @@ export async function getStaticProps() {
     const attendance = JSON.parse(JSON.stringify(res))
 
     const lastSunday = moment().day(0).format('LL')
-    const lastMonday = moment().day(1).format('LL')
+    // const lastMonday = moment().day(1).format('LL')
     const lastWednesday = moment().day(3).format('LL')
-    const lastFriday = moment().day(5).format('LL')
+    // const lastFriday = moment().day(5).format('LL')
 
     const lastSundayAttendance = attendance.filter(item => {
       return moment(item.date).format('LL') === lastSunday
     }).length
 
-    const lastMondayAttendance = attendance.filter(item => {
-      return moment(item.date).format('LL') === lastMonday
-    }).length
+    // const lastMondayAttendance = attendance.filter(item => {
+    //   return moment(item.date).format('LL') === lastMonday
+    // }).length
 
     const lastWednesdayAttendance = attendance.filter(item => {
       return moment(item.date).format('LL') === lastWednesday
     }).length
 
-    const lastFridayAttendance = attendance.filter(item => {
-      return moment(item.date).format('LL') === lastFriday
-    }).length
+    // const lastFridayAttendance = attendance.filter(item => {
+    //   return moment(item.date).format('LL') === lastFriday
+    // }).length
 
     // Attendance statistics for year
     const yearAttendanceStat = await PrismaClient.attendance.groupBy({
@@ -365,9 +365,9 @@ export async function getStaticProps() {
         totalMembers,
         activeMembers,
         lastSundayAttendance,
-        lastMondayAttendance,
+        // lastMondayAttendance,
         lastWednesdayAttendance,
-        lastFridayAttendance,
+        // lastFridayAttendance,
         stats: {
           monthlyAttendance,
           yearlyAttendance,

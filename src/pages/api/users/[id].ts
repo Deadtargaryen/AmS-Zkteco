@@ -37,8 +37,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         },
       })
 
-      if (currentUser) {
-        return res.status(400).json({ error: 'Cannot delete an active user.' })
+      if (currentUser?.id === id) {
+        return res.status(400).json({ error: 'Cannot delete the currently logged-in user.' })
       }
 
       const user = await client.user.delete({

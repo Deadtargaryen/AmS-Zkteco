@@ -9,7 +9,7 @@ export default validateRoute(async (req: NextApiRequest, res: NextApiResponse) =
     const users = await client.user.findMany()
     res.json(users)
   } else if (req.method === 'POST') {
-    let password = '123456'
+    let password = 'EXPLAIN4me@COC'
     const { name, role, avatarUrl } = req.body
     if (!name || !role) {
       return res.status(422).json({ error: 'Missing name and/or role' })

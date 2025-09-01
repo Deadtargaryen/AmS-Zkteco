@@ -199,15 +199,15 @@ const Absentee = () => {
   const getLastSunday = () => {
     return moment().day(0).format('D')
   }
-  const getLastMonday = () => {
-    return moment().day(1).format('D')
-  }
+  // const getLastMonday = () => {
+  //   return moment().day(1).format('D')
+  // }
   const getLastWednesday = () => {
     return moment().day(3).format('D')
   }
-  const getLastFriday = () => {
-    return moment().day(5).format('D')
-  }
+  // const getLastFriday = () => {
+  //   return moment().day(5).format('D')
+  // }
 
   useEffect(() => {
     setActiveFilters(prev => {

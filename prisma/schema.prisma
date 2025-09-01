@@ -26,7 +26,7 @@ model Member {
   firstname        String
   middlename       String
   lastname         String
-  cardNo           Int
+  cardNo           Int            @unique
   address          String
   contactNo        String
   alternateContact String?
@@ -51,7 +51,6 @@ model Member {
   attendance       Attendance[]
   Timeline         Timeline[]
 
-  @@unique([cardNo, zoneId])
 }
 
 model Zone {

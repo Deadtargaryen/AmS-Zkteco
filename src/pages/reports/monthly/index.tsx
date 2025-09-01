@@ -52,21 +52,21 @@ const MonthlyReport = () => {
       selector: row => row.totalSundayAttendance,
       sortable: true,
     },
-    {
-      name: 'Mondays',
-      selector: row => row.totalMondayAttendance,
-      sortable: true,
-    },
+    // {
+    //   name: 'Mondays',
+    //   selector: row => row.totalMondayAttendance,
+    //   sortable: true,
+    // },
     {
       name: 'Wednesdays',
       selector: row => row.totalWednesdayAttendance,
       sortable: true,
     },
-    {
-      name: 'Fridays',
-      selector: row => row.totalFridayAttendance,
-      sortable: true,
-    },
+    // {
+    //   name: 'Fridays',
+    //   selector: row => row.totalFridayAttendance,
+    //   sortable: true,
+    // },
     {
       name: 'Total',
       selector: row => row.totalAttendance,
