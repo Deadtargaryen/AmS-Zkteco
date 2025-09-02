@@ -58,9 +58,10 @@ export default validateRoute(async (req, res) => {
         where: { name: zone },
       })
 
-      const member = await client.member.findUnique({
+      const member = await client.member.findFirst({
         where: {
-          cardNo_zoneId: { cardNo: parseInt(cardNo), zoneId: selectedZone.id },
+          cardNo: parseInt(cardNo),
+          zoneId: selectedZone.id,
         },
       })
 

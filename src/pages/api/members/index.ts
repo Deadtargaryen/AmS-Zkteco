@@ -86,9 +86,10 @@ export default validateRoute(async (req: NextApiRequest, res: NextApiResponse) =
 
       let member = null
       if (selectedZone) {
-        member = await client.member.findUnique({
+        member = await client.member.findFirst({
           where: {
-            cardNo_zoneId: { cardNo: parseInt(cardNo), zoneId: selectedZone.id },
+            cardNo: parseInt(cardNo),
+            zoneId: selectedZone.id,
           },
         })
       }
