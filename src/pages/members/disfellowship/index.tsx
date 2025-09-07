@@ -126,7 +126,7 @@ const Members = () => {
   }
 
   const gotoProfile = id => {
-    router.push({ pathname: `/profile/${id}`, query: { isProfile: false } })
+    router.push({ pathname: `/profile/${id}`, query: { isProfile: true } })
   }
 
   const handleDeleteMember = row => {
